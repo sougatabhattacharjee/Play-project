@@ -1,0 +1,50 @@
+@(goodReads: List[Goodreads])
+
+@import helper._
+
+<html>
+    <head>
+    <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/gr.png")" />
+    <title>Quora Questions details</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/quora.css")">
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+        <script type="text/javascript">
+        function setVisibility(id1, id2, visibility1, visibility2) {
+        	document.getElementById(id1).style.display = visibility1;
+        	document.getElementById(id2).style.display = visibility2;
+        	}
+        </script>
+</head>
+
+<style type="text/css">
+
+
+</style>
+
+<body> 
+  <div style="width:10%">
+<a href="@routes.Application.users()">
+<img src="@routes.Assets.at("images/UserSearch.png")" alt="Go to Search Page!" title="Go to Search Page!" width="62" height="62" border="0">
+</a>
+</div>
+   
+   <div  id="div1">
+    <h1><font color="black">@goodReads.size() book(s)</font></h1>
+    
+    <ul>
+        @for(qa <- goodReads) {
+            <li>
+                <font color="red">@qa.title</font>
+                </br>
+                <font color="blue"> @qa.author</font>, Rating -> <font color="green"> @qa.rating</font>
+                </br>
+                 <font color="black"> @qa.reviewtext</font>
+                
+            </li>
+        }
+    </ul>
+    </div>
+    
+ </body>   
+    
+    

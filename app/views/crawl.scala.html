@@ -1,0 +1,82 @@
+@(users: List[Users], taskForm: Form[Choice])
+
+@import views.html.helper._
+
+<html>
+    <head>
+    <title>Select your choice!</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/main.css")"/>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.8.0.min.js")"></script>
+        
+    <script type="text/javascript">
+	</script>
+        
+    <script type="text/javascript">
+	</script>
+        
+   <style type="text/css">
+       
+   </style>
+        
+    </head>
+	<!-- <body background="@routes.Assets.at("images/choice.jpg")"> -->
+	
+	<body>
+	
+	<div id="outPopUp">
+  <h2>Please Select your choice!!</h2>
+    @form(routes.Application.doReview(), 'id -> "doReview", 'name -> "doReview") {
+    	
+    	<h3>@users.size() user(s) found!!</h3>
+    	
+    	
+	Please Select a User....
+	<select required style="width:200px" name="u_name" id="u_name" size=@users.size()>
+        @for(user <- users) {
+            <option value = @user.user_id>
+                @user.username
+            </option>
+        }
+        </select>
+        <p id="h1" style="display:none; color:red;" >Please Select a User!</p>
+        
+        <br/>
+        <br/>
+        <br/>
+ 
+ <label>
+  <input type="radio" required name="choice" id="choice" value="1" />
+  <img src="@routes.Assets.at("images/twitter.jpg")"  height="42" width="42" alt="Twitter" title="Twitter">
+</label>
+        
+ 
+ <label>
+  <input type="radio" required  name="choice" id="choice" value="2" />
+  <img src="@routes.Assets.at("images/Q.png")"  height="42" width="42" alt="Quora" title="Quora">
+</label>
+ 
+ <label>
+  <input type="radio" required  name="choice" id="choice" value="3" />
+  <img src="@routes.Assets.at("images/gr.png")"  height="42" width="42" alt="Goodreads" title="Goodreads">
+</label>
+<br/>
+<p id="h2" style="display:none;">Please Select an option from Twitter, Quora and GoodReads!</p>
+        
+   
+      
+       <br/>
+        <br/>
+        
+         <div id="container_buttons">
+                    <p>
+                        <a class="a_demo_four" href="#" onclick="document.getElementById('doReview').submit();">
+                            Submit
+                        </a>
+                    </p>
+                    </div>
+        
+    }
+    </div>
+    </body>

@@ -1,0 +1,71 @@
+@(questions_answered: List[Quora], questions_asked: List[Quora])
+
+@import helper._
+
+<html>
+    <head>
+    <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/Q.png")" />
+    <title>Quora Questions details</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/quora.css")">
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+        <script type="text/javascript">
+        function setVisibility(id1, id2, visibility1, visibility2) {
+        	document.getElementById(id1).style.display = visibility1;
+        	document.getElementById(id2).style.display = visibility2;
+        	}
+        </script>
+</head>
+
+<style type="text/css">
+
+</style>
+
+<body> 
+
+<div style="width:10%">
+<a href="@routes.Application.users()">
+<img src="@routes.Assets.at("images/UserSearch.png")" alt="Go to Search Page!" title="Go to Search Page!" width="62" height="62" border="0">
+</a>
+</div>
+   
+   <div style="text-align:center">
+ <a href="#" class="myButton" onclick="setVisibility('div1', 'div2', 'none', 'inline');">Questions Asked</a>   
+ <a href="#" class="myButtonn" onclick="setVisibility('div1', 'div2', 'inline', 'none');">Question Answered</a>   
+    
+    
+   <!--  <button type="button" id = "b1" onclick="setVisibility('div1', 'div2', 'inline', 'none');">Questions Asked</button> 
+    <button type="button" id = "b2" onclick="setVisibility('div1', 'div2', 'none', 'inline');">Question Answered</button> 
+    -->
+   </div>
+   
+   
+   <div style="display: none;" id="div1">
+    <h1><font color="black">@questions_answered.size() question(s) answered</font></h1>
+    
+    <ul>
+        @for(qa <- questions_answered) {
+            <li>
+                <font color="red">@qa.question_answer</font>
+                </br>
+                - <font color="black"> @qa.answer</font>
+                
+            </li>
+        }
+    </ul>
+    </div>
+    
+    <div style="display: none;" id="div2">
+    <h1><font color="black">@questions_asked.size() question(s) asked</font></h1>
+    
+    <ul>
+        @for(qak <- questions_asked) {
+            <li>
+                <font color="red">@qak.question_asked</font>
+            </li>
+        }
+    </ul>
+    </div>
+    
+ </body>   
+    
+    

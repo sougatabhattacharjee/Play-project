@@ -1,0 +1,17 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+#GET     /                           controllers.Application.index()
+GET     /                           controllers.CrawlingData.index()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Tasks          
+GET     /quora                  controllers.Application.quora(u_name: String)
+GET     /twitter                  controllers.Application.twitter(u_name: String)
+GET     /goodreads                  controllers.Application.goodreads(u_name: String)
+GET     /users                  controllers.Application.users()
+POST    /doReview                  controllers.Application.doReview()
