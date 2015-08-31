@@ -1,0 +1,565 @@
+@(textToSearch: String, u_name: String, 
+	tweeetMentioned: List[Twitter], tweeetFavorites: List[Twitter], tweets: List[Twitter], twitterBio: List[userInfo],
+	questions_answered: List[Quora], questions_asked: List[Quora], quora_blog: List[Quora], quora_post: List[Quora], quoraBio: List[userInfo],
+	goodReads: List[Goodreads], goodreadsreview: List[Goodreads], goodreadsBio: List[userInfo],
+	twitterGroup: List[Grouplist], goodreadsGroup: List[Grouplist])
+
+@import views.html.helper._
+
+<html>
+    <head>
+    <title>Select your choice!</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/main.css")"/>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.8.0.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.min.js")"></script>
+     <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/search.css")"/>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/search.js")"></script>
+    
+    <script type="text/javascript">
+    
+    function msetVisibility(id1, id2, id3, visibility1, visibility2, visibility3) {
+    	document.getElementById(id1).style.display = visibility1;
+    	document.getElementById(id2).style.display = visibility2;
+    	document.getElementById(id3).style.display = visibility3;
+    	if(@textToSearch.nonEmpty)
+    		highlightWord(document.body,'@textToSearch');
+    	}
+    	
+
+    
+    function highlightWord(root,word){
+    	  textNodesUnder(root).forEach(highlightWords);
+
+    	  function textNodesUnder(root){
+    	    var walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false),
+    	        text=[], node;
+    	    while(node=walk.nextNode()) text.push(node);
+    	    return text;
+    	  }
+    	    
+    	  function highlightWords(n){
+    	  word = word.toLowerCase();
+    	    for (var i; (i=n.nodeValue.toLowerCase().indexOf(word,i)) > -1; n=after){
+    	      var after = n.splitText(i+word.length);
+    	      var highlighted = n.splitText(i);
+    	      var span = document.createElement('span');
+    	      span.className = 'highlighted';
+    	      span.appendChild(highlighted);
+    	      after.parentNode.insertBefore(span,after);
+    	    }
+    	  }
+    	}
+    
+ 
+    </script>
+          
+   <style type="text/css">
+	
+    
+      
+   </style>
+        
+    </head>
+	
+	<body>
+	<div style="width:10%">
+<a href="@routes.Application.users()">
+<img src="@routes.Assets.at("images/UserSearch.png")" alt="Go to Search Page!" title="Go to Search Page!" width="62" height="62" border="0">
+</a>
+</div>
+	<div id="outPopUp1">
+	
+    @form(routes.Application.searchResult(), 'id -> "usersearchText", 'name -> "usersearchText" ) {
+    
+		<div>
+    	<font color=red>*</font> <input type="text" required="required" class="input-xlarge" name="textToSearch" id="textToSearch" autocomplete="off" style="height:5%;">
+    	
+    	<!-- <a href="#" onclick="document.getElementById('usersearchText').submit();">
+                            <img src="@routes.Assets.at("images/search.png")" style="background: transparent; height: 20" alt="Search" title="Search"/>
+                        </a> -->
+         <input type="hidden" id="u_name" name="u_name" value="@u_name"/>              
+                        
+    	<button type="submit" name="Search" value="Search">
+    	<img src="@routes.Assets.at("images/search.png")" style="background: transparent; height: 20" alt="Search" title="Search"/>
+    	</button>
+       </div>
+      
+       <br/>
+    }
+    
+    <div id="choiceSearch" name = "choiceSearch">
+     <label>
+ <input type="radio" required name="choice" id="choice" value="1" onclick="msetVisibility('twitter','quora','goodreads','inline','none','none');" />
+  <img src="@routes.Assets.at("images/twitter.jpg")"  height="42" width="42" alt="Twitter" title="Twitter">
+</label>
+        
+ <label>
+  <input type="radio" required  name="choice" id="choice" value="2" onclick="msetVisibility('twitter','quora','goodreads','none','inline','none');" />
+  <img src="@routes.Assets.at("images/Q.png")"  height="42" width="42" alt="Quora" title="Quora">
+</label>
+ 
+ <label>
+  <input type="radio" required  name="choice" id="choice" value="3" onclick="msetVisibility('twitter','quora','goodreads','none','none','inline');" />
+  <img src="@routes.Assets.at("images/gr.png")"  height="42" width="42" alt="Goodreads" title="Goodreads">
+</label>
+<br/>
+<br/>
+@if(textToSearch.nonEmpty){
+	<p id="h2" style="display:inline; color:red;" ><b>&nbsp;&nbsp;&nbsp;Please Select an option to view result for  
+	<font color=Crimson size="13">"@textToSearch"</font></b></p>
+}
+
+</div>
+    </div>
+
+
+
+    
+    <div id = "twitter" style="display: none;" class = "para">
+    <br/><br/><br/><br/>
+    
+     <div >
+   
+ <a href="#" class="tmyButton1" onclick="tsetVisibility('tdiv1', 'tdiv2', 'tdiv3', 'tdiv4', 'inline', 'none', 'none', 'none');">Mentioned tweets</a>   
+ <a href="#" class="tmyButton2" onclick="tsetVisibility('tdiv1', 'tdiv2', 'tdiv3', 'tdiv4', 'none', 'inline', 'none', 'none');">Favorites tweets</a>
+ 
+  </div>
+  <div >
+ <a href="#" class="tmyButton3" onclick="tsetVisibility('tdiv1', 'tdiv2', 'tdiv3', 'tdiv4', 'none', 'none', 'inline', 'none');">Tweets</a> 
+  &nbsp;
+<a href="#" onclick="tsetVisibility('tdiv1', 'tdiv2', 'tdiv3', 'tdiv4', 'none', 'none', 'none', 'inline');"> 
+<img src="@routes.Assets.at("images/bio.png")" alt="Twitter Bio" title="Twitter Bio" width="62" height="62" border="0"> </a>  
+   </div>
+   <div style="display: none;" id="tdiv1">
+    <h1><font color="black">Mentioned in @tweeetMentioned.size() tweet(s)</font></h1>
+    
+    <ul>
+        @for(tm <- tweeetMentioned) {
+            <li>
+                <font color="blue">@tm.tweetBy</font> tweets :
+                </br>
+                - <font color="black"> @tm.tweetOthers</font>
+                
+            </li>
+        }
+    </ul>
+    </div>
+    
+    <div style="display: none;" id="tdiv2">
+    <h1><font color="black">@tweeetFavorites.size() favorite tweet(s)</font></h1>
+    
+    <ul>
+        @for(tv <- tweeetFavorites) {
+            <li>
+                <font color="blue">@tv.tweetBy</font> tweets :
+                </br>
+                - <font color="black"> @tv.tweetOthers</font>
+                
+            </li>
+        }
+    </ul>
+
+    </div>
+    
+     <div style="display: none;" id="tdiv3">
+     
+    <h1><font color="black">Total @tweets.size() tweet(s)</font></h1>
+    
+    <ul>
+        @for(t <- tweets) {
+            <li>
+                 <font color="black"> @t.tweet</font>
+            </li>
+        }
+    </ul>
+    </div>
+    
+    <div style="display: none;" id="tdiv4">
+    @if(twitterBio.isEmpty && twitterGroup.isEmpty) {
+  <h1><font color=red>Nothing to display!!</font></h1>
+}
+     @for(gdb <- twitterBio) {
+    <h2><font color=DodgerBlue><b>@gdb.name</b></font></h2>
+    
+  <div id='tparent_div_1'>
+<div class ='tchild_div_1'> <img src="@gdb.image_link" alt="@gdb.name" title="@gdb.name" width="111" height="148" border="0"></div>
+<div class ='tchild_div_2'>
+<fieldset>
+  <legend><font color = "CornflowerBlue"><b>Twitter Profile:</b></font></legend>
+<font color = DarkBlue><b>Biography :</b></font>&nbsp;&nbsp;<font color="green">@gdb.biography</font><br/>
+<font color = DarkBlue><b>Description :</b></font>&nbsp;&nbsp;<font color="green">@gdb.description</font><br/>
+
+            <font color = DarkBlue><b>Location(s) :</b></font>
+            <ul>
+            
+            @for(loc <- gdb.location) {
+            	<li>
+                <font color="red">@loc</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+          <font color = DarkBlue><b>Employment :</b></font>
+            <ul>
+            
+            @for(loc1 <- gdb.employment) {
+            	<li>
+                <font color="red">@loc1</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+                <font color = DarkBlue><b> Education :</b></font>
+            <ul>
+            
+            @for(loc2 <- gdb.education) {
+            	<li>
+                <font color="red">@loc2</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+           
+               <font color = DarkBlue><b> Interest(s) :</b></font>
+            <ul>
+            
+            @for(loc3 <- gdb.interests) {
+            	<li>
+                <font color="red">@loc3</font>
+                </li>
+               }
+                
+                </ul>      
+                <br/>
+              
+               }
+                 <font color = DarkBlue><b>Group(s) :</b></font>
+            <ul>
+            @for(gg <- twitterGroup) {
+            	<li>
+                <font color="red">@gg.group_name</font>
+                </li>
+               }
+                
+                </ul>  
+                </fieldset>
+
+</div>
+</div>
+    
+    <br/>
+    
+          
+        
+    </div>
+    
+    
+    
+    </div>
+    
+    
+    
+    <div id = "quora" style="display: none;" class = "para">
+    <br/><br/><br/><br/>
+     
+
+<div >
+ <a href="#" class="qmyButton" onclick="qsetVisibility('qdiv1', 'qdiv2', 'qdiv3', 'qdiv4', 'qdiv5', 'none', 'inline', 'none', 'none', 'none');">Questions Asked</a>   
+ <a href="#" class="qmyButtonn" onclick="qsetVisibility('qdiv1', 'qdiv2', 'qdiv3', 'qdiv4', 'qdiv5', 'inline', 'none', 'none', 'none', 'none');">Question Answered</a>   
+  <a href="#" class="qmyButton2" onclick="qsetVisibility('qdiv1', 'qdiv2', 'qdiv3', 'qdiv4', 'qdiv5', 'none', 'none', 'inline', 'none', 'none');">Blog</a>
+  
+</div>
+<div >
+<a href="#" class="qmyButton1" onclick="qsetVisibility('qdiv1', 'qdiv2', 'qdiv3', 'qdiv4', 'qdiv5', 'none', 'none', 'none', 'inline', 'none');">Post</a>
+<a href="#" onclick="qsetVisibility('qdiv1', 'qdiv2', 'qdiv3', 'qdiv4', 'qdiv5', 'none', 'none', 'none', 'none', 'inline');"> <img src="@routes.Assets.at("images/bio.png")" alt="Quora Bio" title="Quora Bio" width="62" height="62" border="0"> </a>
+  </div>
+  
+
+   
+   <div style="display: none;" id="qdiv1">
+    <h1><font color="black">@questions_answered.size() question(s) answered</font></h1>
+    
+    <ul>
+        @for(qa <- questions_answered) {
+            <li>
+                <font color="red">@qa.question_answer</font>
+                </br>
+                - <font color="black"> @qa.answer</font>
+                
+            </li>
+        }
+    </ul>
+    </div>
+    
+    <div style="display: none;" id="qdiv2">
+    <h1><font color="black">@questions_asked.size() question(s) asked</font></h1>
+    
+    <ul>
+        @for(qak <- questions_asked) {
+            <li>
+                <font color="red">@qak.question_asked</font>
+            </li>
+        }
+    </ul>
+    </div>
+    
+    <div style="display: none;" id="qdiv3">
+    <h1><font color="black">@quora_blog.size() blog(s) found!</font></h1>
+    
+
+    <ul>
+        @for(qb <- quora_blog) {
+            <li>
+                <a href="@qb.blog_link" target="_blank" class="qone" style="text-decoration: none">@qb.blog_name</a>
+                <br/> 
+                <br/> 
+            </li>
+        }
+    </ul> 
+    
+    </div>
+    
+    <div style="display: none;" id="qdiv4">
+    <h1><font color="black">@quora_post.size() post(s) found!</font></h1>
+    
+    <ul>
+        @for(qp <- quora_post) {
+            
+            <li>
+                <a href="@qp.post_link" target="_blank" class="qone" style="text-decoration: none">@qp.post_heading</a>
+                <br/> 
+                <br/> 
+            </li>
+        }
+    </ul>
+    </div>
+    
+    <div style="display: none;" id="qdiv5">
+    @if(quoraBio.isEmpty) {
+  <h1><font color=red>Nothing to display!!</font></h1>
+}
+     @for(gdb <- quoraBio) {
+    <h2><font color=#8B0000><b>@gdb.name</b></font></h2>
+    
+  <div id='qparent_div_1'>
+<div class ='qchild_div_1'> <img src="@gdb.image_link" alt="@gdb.name" title="@gdb.name" width="111" height="148" border="0"></div>
+<div class ='qchild_div_2'>
+<fieldset>
+  <legend><font color = "FireBrick"><b>Quora Profile:</b></font></legend>
+<font color = DarkBlue><b>Biography :</b></font>&nbsp;&nbsp;<font color="green">@gdb.biography</font><br/>
+<font color = DarkBlue><b>Description :</b></font>&nbsp;&nbsp;<font color="green">@gdb.description</font><br/>
+
+            <font color = DarkBlue><b>Location(s) :</b></font>
+            <ul>
+            
+            @for(loc <- gdb.location) {
+            	<li>
+                <font color="red">@loc</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+         <font color = DarkBlue><b> Employment :</b></font>
+            <ul>
+            
+            @for(loc1 <- gdb.employment) {
+            	<li>
+                <font color="red">@loc1</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+               <font color = DarkBlue><b>  Education :</b></font>
+            <ul>
+            
+            @for(loc2 <- gdb.education) {
+            	<li>
+                <font color="red">@loc2</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+           
+               <font color = DarkBlue><b> Interest(s) :</b></font>
+            <ul>
+            
+            @for(loc3 <- gdb.interests) {
+            	<li>
+                <font color="red">@loc3</font>
+                </li>
+               }
+                
+                </ul>      
+                <br/>
+             
+                </fieldset>
+
+</div>
+</div>
+    
+    <br/>
+        }
+    </div>
+    
+    </div>
+    
+    
+    
+    <div id = "goodreads" style="display: none;" class = "para">
+    
+    <br/><br/>
+    
+    <div >
+<a href="#" class="gmyButton"  onclick="return gsetVisibility('gdiv1', 'gdiv2', 'gdiv3', 'inline', 'none', 'none');">Books</a>
+<a href="#" class="gmyButton1" onclick="return gsetVisibility('gdiv1', 'gdiv2', 'gdiv3', 'none', 'inline', 'none');">Text Review</a>
+ &nbsp;
+<a href="#Foo" onclick="return gsetVisibility('gdiv1', 'gdiv2', 'gdiv3', 'none', 'none', 'inline');"> <img src="@routes.Assets.at("images/bio.png")" alt="Goodreads Bio" title="Goodreads Bio" width="62" height="62" border="0"> </a>
+</div>
+
+<div style="display: none;" id="gdiv1">
+    <h1><font color="black">@goodReads.size() book(s)</font></h1>
+    
+    <ul>
+        @for(qa <- goodReads) {
+            <li>
+                <font color="red">@qa.title</font>
+                </br>
+                Authors : <font color="blue"> @qa.author</font>, Rating : <font color="green"> @qa.rating</font>
+                </br>
+                 Genre : <font color="black"> @qa.genre</font>, 
+               
+                 Shelf : <font color="black"> @qa.shelf</font>
+               </br>
+                 ISBN : <font color="black"> @qa.isbn</font>,
+                 ISBN13 : <font color="black"> @qa.isbn13</font>  
+                 </br>
+                 Date : <font color="black"> @qa.date</font>
+                
+            </li>
+        }
+    </ul>
+    </div>
+    
+     <div style="display: none;" id="gdiv2">
+    <h1><font color="black">@goodreadsreview.size() review(s) found!</font></h1>
+    
+    <ul>
+        @for(gd <- goodreadsreview) {
+            <li>
+                <font color="red">@gd.title</font>
+                </br> - 
+                <font color="black"> @gd.reviewtext</font>
+                
+                
+            </li>
+        }
+    </ul>
+    </div>
+    
+     <div style="display: none;" id="gdiv3">
+     @if(goodreadsBio.isEmpty && goodreadsGroup.isEmpty) {
+  <h1><font color=red>Nothing to display!!</font></h1>
+}
+     @for(gdb <- goodreadsBio) {
+    <h2><font color="Sienna"><b>@gdb.name</b></font></h2>
+    
+  <div id='gparent_div_1'>
+<div class ='gchild_div_1'> <img src="@gdb.image_link" alt="@gdb.name" title="@gdb.name" width="111" height="148" border="0"></div>
+<div class ='gchild_div_2'>
+<fieldset>
+  <legend><font color = "SaddleBrown"><b>Goodreads Profile:</b></font></legend>
+<font color = DarkBlue><b>Sex :</b></font>&nbsp;&nbsp;<font color="green">@gdb.gender</font><br/> 
+               <font color = DarkBlue><b> Age :</b></font>&nbsp;&nbsp;<font color="green">@gdb.age</font> <br/>
+               <font color = DarkBlue><b> Website :</b></font>&nbsp;&nbsp;<font color="green">@gdb.website</font> <br/>
+               <font color = DarkBlue><b> Fav Books :</b></font>&nbsp;&nbsp;<font color="green">@gdb.fav_books</font> <br/>
+                
+            <font color = DarkBlue><b>Fav Author(s) :</b></font>
+            <ul>
+            
+            @for(fa <- gdb.fav_authors) {
+            	<li>
+                <font color="red">@fa</font>
+                </li>
+               }
+                
+                </ul>    
+                
+            <br/>
+            <font color = DarkBlue><b>Location(s) :</b></font>
+            <ul>
+            
+            @for(loc <- gdb.location) {
+            	<li>
+                <font color="red">@loc</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+          <font color = DarkBlue><b>Bookshelve(s) :</b></font>
+            <ul>
+            
+            @for(loc1 <- gdb.bookshelves) {
+            	<li>
+                <font color="red">@loc1</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+               <font color = DarkBlue><b> Interest(s) :</b></font>
+            <ul>
+            
+            @for(loc2 <- gdb.interests) {
+            	<li>
+                <font color="red">@loc2</font>
+                </li>
+               }
+                
+                </ul>      
+                <br/>
+             <font color = DarkBlue><b> Description :</b></font><font color="green">@gdb.description</font> <br/>  
+        }      <br/>
+               
+               
+              
+               <font color = DarkBlue><b>Group(s) :</b></font>
+            <ul>
+            
+            @for(gg <- goodreadsGroup) {
+            	<li>
+                <font color="red">@gg.group_name</font>
+                </li>
+               }
+                
+                </ul>  
+                </fieldset>
+
+</div>
+</div>
+    
+    <br/>
+        
+      
+   
+    </div>
+
+
+    </div>
+    
+    
+    
+
+    </body>

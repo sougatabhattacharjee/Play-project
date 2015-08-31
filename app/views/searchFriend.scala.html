@@ -1,0 +1,187 @@
+@(textToSearch: String, u_name: String, twitterFriend: List[Friends], quoraFriend: List[Friends], goodReadsFriend: List[Friends])
+
+@import views.html.helper._
+
+<html>
+    <head>
+    <title>Select your choice!</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/main.css")"/>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.8.0.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.min.js")"></script>
+    
+    <script type="text/javascript">
+    
+    function msetVisibility(id1, id2, id3, visibility1, visibility2, visibility3) {
+    	document.getElementById(id1).style.display = visibility1;
+    	document.getElementById(id2).style.display = visibility2;
+    	document.getElementById(id3).style.display = visibility3;
+    	if(@textToSearch.nonEmpty)
+    		highlightWord(document.body,'@textToSearch');
+    	}
+    	
+
+    
+    function highlightWord(root,word){
+    	  textNodesUnder(root).forEach(highlightWords);
+
+    	  function textNodesUnder(root){
+    	    var walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false),
+    	        text=[], node;
+    	    while(node=walk.nextNode()) text.push(node);
+    	    return text;
+    	  }
+    	    
+    	  function highlightWords(n){
+    	  word = word.toLowerCase();
+    	    for (var i; (i=n.nodeValue.toLowerCase().indexOf(word,i)) > -1; n=after){
+    	      var after = n.splitText(i+word.length);
+    	      var highlighted = n.splitText(i);
+    	      var span = document.createElement('span');
+    	      span.className = 'highlighted';
+    	      span.appendChild(highlighted);
+    	      after.parentNode.insertBefore(span,after);
+    	    }
+    	  }
+    	}
+    
+ 
+    </script>
+          
+   <style type="text/css">
+	
+    .highlighted { background:yellow }
+      
+   </style>
+        
+    </head>
+	
+	<body>
+	<div style="width:10%">
+<a href="@routes.Application.users()">
+<img src="@routes.Assets.at("images/UserSearch.png")" alt="Go to Search Page!" title="Go to Search Page!" width="62" height="62" border="0">
+</a>
+</div>
+	<div id="outPopUp1">
+	
+    @form(routes.Application.searchFriendResult(), 'id -> "usersearchText", 'name -> "usersearchText" ) {
+    
+		<div>
+    	<font color=red>*</font> <input type="text" required="required" class="input-xlarge" name="textToSearch" id="textToSearch" autocomplete="off" style="height:5%;">
+    	
+    	<!-- <a href="#" onclick="document.getElementById('usersearchText').submit();">
+                            <img src="@routes.Assets.at("images/search.png")" style="background: transparent; height: 20" alt="Search" title="Search"/>
+                        </a> -->
+         <input type="hidden" id="u_name" name="u_name" value="@u_name" style="top: 30px;"/>              
+                        
+    	<button type="submit" name="Search" value="Search">
+    	<img src="@routes.Assets.at("images/searchFriendText.png")" style="background: transparent; height: 30" alt="Search" title="Search"/>
+    	</button>
+       </div>
+      
+       <br/>
+    }
+    
+    <div id="choiceSearch" name = "choiceSearch">
+     <label>
+ <input type="radio" required name="choice" id="choice" value="1" onclick="msetVisibility('twitter','quora','goodreads','inline','none','none');" />
+  <img src="@routes.Assets.at("images/twitter.jpg")"  height="42" width="42" alt="Twitter" title="Twitter">
+</label>
+        
+ <label>
+  <input type="radio" required  name="choice" id="choice" value="2" onclick="msetVisibility('twitter','quora','goodreads','none','inline','none');" />
+  <img src="@routes.Assets.at("images/Q.png")"  height="42" width="42" alt="Quora" title="Quora">
+</label>
+ 
+ <label>
+  <input type="radio" required  name="choice" id="choice" value="3" onclick="msetVisibility('twitter','quora','goodreads','none','none','inline');" />
+  <img src="@routes.Assets.at("images/gr.png")"  height="42" width="42" alt="Goodreads" title="Goodreads">
+</label>
+<br/>
+<br/>
+@if(textToSearch.nonEmpty){
+	<p id="h2" style="display:inline; color:red;" ><b>Please Select an option to view result for  
+	<font color=Crimson size="13">"@textToSearch"</font></b></p>
+}
+
+</div>
+    </div>
+
+
+
+    
+    <div id = "twitter" style="display: none;" class = "para">
+    
+    <h2>@twitterFriend.size() Twitter friend(s) found!!</h2>
+    
+    <ul>
+        @for(qa <- twitterFriend) {
+            <li>
+                <font color="red">@qa.name</font>, @qa.sname
+                </br>
+                @if(qa.friendtype=="tFollowers"){
+                - <font color="black"> Twitter Followers</font>
+                }
+               @if(qa.friendtype=="tFollowing"){
+                - <font color="black"> Twitter Following</font>
+                }
+            </li>
+        }
+    </ul>
+    
+    </div>
+    
+    
+    
+    <div id = "quora" style="display: none;" class = "para">
+      
+    <h2>@quoraFriend.size() Quora friend(s) found!!</h2>
+    
+    <ul>
+        @for(qa <- quoraFriend) {
+            <li>
+                <font color="red">@qa.name</font>, @qa.sname
+                </br>
+                @if(qa.friendtype=="qFollowers"){
+                - <font color="black"> Quora Followers</font>
+                }
+               @if(qa.friendtype=="qFollowing"){
+                - <font color="black"> Quora Following</font>
+                }
+            </li>
+        }
+    </ul>
+   
+    </div>
+    
+    
+    
+    <div id = "goodreads" style="display: none;" class = "para">
+    
+    
+<h2>@goodReadsFriend.size() Goodreads friend(s) found!!</h2>
+    
+    <ul>
+        @for(qa <- goodReadsFriend) {
+            <li>
+                <font color="red">@qa.name</font>, @qa.sname
+                </br>
+                @if(qa.friendtype=="gFollowers"){
+                - <font color="black"> Goodreads Followers</font>
+                }
+               @if(qa.friendtype=="gFollowing"){
+                - <font color="black"> Goodreads Following</font>
+                }
+                @if(qa.friendtype=="gFriend"){
+                - <font color="black"> Goodreads Friend</font>
+                }
+            </li>
+        }
+    </ul>
+    </div>
+    
+    
+    
+
+    </body>

@@ -1,19 +1,168 @@
-@(users: List[Users], taskForm: Form[Choice])
+@(users: List[Users], taskForm: Form[UserInformation])
 
 @import views.html.helper._
 
 <html>
     <head>
     <title>Select your choice!</title>
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/main.css")"/>
     <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.8.0.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.min.js")"></script>
+     <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/style4.css")"/>
+     <link rel='stylesheet' type='text/css' href="@routes.Assets.at("stylesheets/select2.css")"/>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.8.0.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/select2.js")"></script>
+        
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/crawl.css")"/>
+   
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#u_name").select2();   
+        });
+        
+        </script>
+   
+    <script type="text/javascript">
+
+   function checkme() {
+	   document.getElementById("error").style.display = 'none';
+    var me = document.getElementById('me');
+    var other = document.getElementById('other');    
+
+    var RN = document.getElementById('RN');	//me
+    var username = document.getElementById('username');	//me
+    var TN = document.getElementById('TN');	
+    var twitter_name = document.getElementById('twitter_name');
+    var GN = document.getElementById('GN');
+    var goodreads_name = document.getElementById('goodreads_name');
+    var QN = document.getElementById('QN');	//me
+    var quora_name = document.getElementById('quora_name');	//me
+    var QE = document.getElementById('QE');	//me
+    var quora_email = document.getElementById('quora_email');	//me
+    var QP = document.getElementById('QP');	//me
+    var quora_password = document.getElementById('quora_password');	//me
+
+    	
+    me.onclick = setVisibility('TN','twitter_name','GN','goodreads_name','none','none','none','none','other');
+    other.checked = false;
+    me.checked = true;
+    //other.onclick = setVisibility('TN','twitter_name','GN','goodreads_name','inline','inline','inline','inline','me');;
+    	
+    }
+
+
+    function checkother() {
+    	document.getElementById("error").style.display = 'none';
+        var me = document.getElementById('me');
+        var other = document.getElementById('other');
+
+
+        var RN = document.getElementById('RN');	//me
+        var username = document.getElementById('username');	//me
+        var TN = document.getElementById('TN');	
+        var twitter_name = document.getElementById('twitter_name');
+        var GN = document.getElementById('GN');
+        var goodreads_name = document.getElementById('goodreads_name');
+        var QN = document.getElementById('QN');	//me
+        var quora_name = document.getElementById('quora_name');	//me
+        var QE = document.getElementById('QE');	//me
+        var quora_email = document.getElementById('quora_email');	//me
+        var QP = document.getElementById('QP');	//me
+        var quora_password = document.getElementById('quora_password');	//me
+
+        	
+        //me.onclick = setVisibility('TN','twitter_name','GN','goodreads_name','none','none','none','none','other');
+        other.onclick = setVisibility('TN','twitter_name','GN','goodreads_name','inline','inline','inline','inline','me');
+        other.checked = true;
+        me.checked = false;
+        	
+        }
+    
+
+       function setVisibility(id1, id2, id3, id4, visibility1, visibility2, visibility3, visibility4, id5) {
+        
+    	document.getElementById(id1).style.display = visibility1;
+    	document.getElementById(id2).style.display = visibility2;
+    	document.getElementById(id3).style.display = visibility3;
+    	document.getElementById(id4).style.display = visibility4;
+    	
+    	}
+
+
+/*function check(){
+	alert('adfasasdsadasdasdasdf');
+	 var me = document.getElementById('me');
+	    var other = document.getElementById('other');
+
+	    if(me.checked==false && me.other==false){
+		    alert('adfasf');
+		    return false;
+	    }
+
+	    return true;
+}*/
+
+
+function check()
+{
+	var radios = document.getElementsByTagName('input');
+	var value;
+	for (var i = 0; i < radios.length; i++) {
+	    if (radios[i].type === 'radio' && radios[i].checked) {
+	        // get value, set checked flag or do whatever you need to
+	        value = radios[i].value;       
+	    }
+	}
+
+if(!value)
+{
+	document.getElementById("error").style.display = 'inline';
+	return false;
+}
+else{
+	
+	document.getElementById("error").style.display = 'none';
+	return true;
+}
+}
+    </script>
         
     <script type="text/javascript">
+    
+    $(document).ready(function(){
+		$('#userInfoReview').validate({
+	    rules: {
+	    	username: {
+	        required: true,
+	      },
+	      quora_email: {
+		        email: true
+		      },
+		  agree: "required"
+		  
+	    },
+			highlight: function(element) {
+				$(element).closest('.control-group').removeClass('success').addClass('error');
+			},
+			success: function(element) {
+				element
+				.text('OK!').addClass('valid')
+				;
+			}
+	  });
+
+});
 	</script>
-        
-    <script type="text/javascript">
+	
+	<script type="text/javascript">
+
+	
+
+
 	</script>
         
    <style type="text/css">
@@ -21,61 +170,77 @@
    </style>
         
     </head>
-	<!-- <body background="@routes.Assets.at("images/choice.jpg")"> -->
 	
 	<body>
 	
-	<div id="outPopUp">
-  <h2>Please Select your choice!!</h2>
-    @form(routes.Application.doReview(), 'id -> "doReview", 'name -> "doReview") {
-    	
-    	<h3>@users.size() user(s) found!!</h3>
-    	
-    	
-	Please Select a User....
-	<select required style="width:200px" name="u_name" id="u_name" size=@users.size()>
+	<div id="outPopUp1" class="project">
+	
+ 	
+  <h2>Please fill up the form!!</h2>
+    @form(routes.CrawlingData.userInfoReview(), 'id -> "userInfoReview", 'name -> "userInfoReview" ) {
+    
+  <table>
+<tr><td><font color=red>*</font> User Type :&nbsp;&nbsp;&nbsp;</td>
+<td style="white-space: nowrap; overflow: hidden; text-overflow:ellipsis;">	<label>Me <input type="radio" name="me" id="me"  unchecked value="1" onChange="checkme();"/> </label></td>
+<td width = "20%">&nbsp;</td>
+<td><label>Other <input type="radio" name="other" id="other"  unchecked value="2" onChange="checkother();"/></label></td>
+</tr>
+<tr><td colspan=4><label id = "error" style="display:none;"><font color=red><b>Please select User type!!</b></font></label></td></tr>
+</table> 
+
+<!--<fieldset>
+  <legend><font color=red>*</font> User Type :</legend>
+  <label>Me <input type="radio" name="me" id="me"  unchecked value="1" onChange="checkme();"/> </label>
+  <label>Other <input type="radio" name="other" id="other"  unchecked value="2" onChange="checkother();"/>
+ </fieldset>-->
+
+  		<br>
+ 		<div class="form-control-group">
+    	 <label class="control-label" id = "RN"><font color=red>*</font> Registration Name :</label> 
+    	   <input type="text" class="input-xlarge" required="required" name="username" id="username" autocomplete="off" style="height:5%;"><br>
+    	 
+    	 <label class="control-label" id = "RN"> Existing Registration Name :</label> 
+    	 <select style="width:200px" name="u_name" id="u_name" size=@users.size()>
         @for(user <- users) {
             <option value = @user.user_id>
                 @user.username
             </option>
         }
-        </select>
-        <p id="h1" style="display:none; color:red;" >Please Select a User!</p>
+        </select> 
         
-        <br/>
-        <br/>
-        <br/>
- 
- <label>
-  <input type="radio" required name="choice" id="choice" value="1" />
-  <img src="@routes.Assets.at("images/twitter.jpg")"  height="42" width="42" alt="Twitter" title="Twitter">
-</label>
         
- 
- <label>
-  <input type="radio" required  name="choice" id="choice" value="2" />
-  <img src="@routes.Assets.at("images/Q.png")"  height="42" width="42" alt="Quora" title="Quora">
-</label>
- 
- <label>
-  <input type="radio" required  name="choice" id="choice" value="3" />
-  <img src="@routes.Assets.at("images/gr.png")"  height="42" width="42" alt="Goodreads" title="Goodreads">
-</label>
-<br/>
-<p id="h2" style="display:none;">Please Select an option from Twitter, Quora and GoodReads!</p>
         
-   
+        
+    	 </div>
+    	 <div class="form-control-group">
+  		 <label class="control-label" id = "QN"> Quora name :</label>
+  		 <input type="text" class="input-xlarge" name="quora_name" id="quora_name" autocomplete="off" style="height:5%;"><br>
+  		 </div>
+  		 <div class="form-control-group">
+  		 <label class="control-label" id = "QE"> Quora Email :</label>
+  		 <input type="text" class="input-xlarge" name="quora_email" id="quora_email" autocomplete="off" style="height:5%;"><br>
+  		 </div>
+  		 <div class="form-control-group">
+  		 <label class="control-label" id = "QP"> Quora Password :</label>
+  		 <input type="password" class="input-xlarge" name="quora_password" id="quora_password" autocomplete="off" style="height:5%;"><br>
+    	</div>
+    	<div class="form-control-group">
+  		 <label class="control-label" id = "TN"> Twitter name :</label> 
+  		 <input type="text" class="input-xlarge" name="twitter_name" id="twitter_name" autocomplete="off" style="height:5%;"><br>
+  		 </div>
+  		 <div class="form-control-group">
+  		 <label class="control-label" id = "GN"> Goodreads name :</label>
+  		 <input type="text" class="input-xlarge" name="goodreads_name" id="goodreads_name" autocomplete="off" style="height:5%;"><br>
+  		 </div>
+        <br/>
+        
+       <div class="form-actions">
+            <button type="submit" class="btn btn-success btn-large" onclick="return check();" >Register</button>
+            <button type="reset" class="btn">Cancel</button>
+          </div>
       
        <br/>
         <br/>
-        
-         <div id="container_buttons">
-                    <p>
-                        <a class="a_demo_four" href="#" onclick="document.getElementById('doReview').submit();">
-                            Submit
-                        </a>
-                    </p>
-                    </div>
         
     }
     </div>

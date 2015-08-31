@@ -1,4 +1,4 @@
-@(questions_answered: List[Quora], questions_asked: List[Quora])
+@(questions_answered: List[Quora], questions_asked: List[Quora], quora_blog: List[Quora], quora_post: List[Quora], quoraBio: List[userInfo])
 
 @import helper._
 
@@ -8,16 +8,41 @@
     <title>Quora Questions details</title>
     <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/quora.css")">
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+        
         <script type="text/javascript">
-        function setVisibility(id1, id2, visibility1, visibility2) {
+        function setVisibility(id1, id2, id3, id4, id5, visibility1, visibility2, visibility3, visibility4, visibility5) {
         	document.getElementById(id1).style.display = visibility1;
         	document.getElementById(id2).style.display = visibility2;
+        	document.getElementById(id3).style.display = visibility3;
+        	document.getElementById(id4).style.display = visibility4;
+        	document.getElementById(id5).style.display = visibility5;
         	}
         </script>
 </head>
 
 <style type="text/css">
 
+#parent_div_1{
+    width:100%;
+    height:auto;
+    border:0px solid red;
+    margin-right:10px;
+    float:left;
+}
+.child_div_1{
+width:auto;
+height:100%;
+ border:0px solid red;
+    float:left;
+    margin-right:5px;
+}
+.child_div_2{
+width:auto;
+height:100%;
+ border:0px solid red;
+    padding-left : 120px;
+    margin-right:5px;
+}
 </style>
 
 <body> 
@@ -29,13 +54,14 @@
 </div>
    
    <div style="text-align:center">
- <a href="#" class="myButton" onclick="setVisibility('div1', 'div2', 'none', 'inline');">Questions Asked</a>   
- <a href="#" class="myButtonn" onclick="setVisibility('div1', 'div2', 'inline', 'none');">Question Answered</a>   
-    
-    
-   <!--  <button type="button" id = "b1" onclick="setVisibility('div1', 'div2', 'inline', 'none');">Questions Asked</button> 
-    <button type="button" id = "b2" onclick="setVisibility('div1', 'div2', 'none', 'inline');">Question Answered</button> 
-    -->
+ <a href="#" class="myButton" onclick="setVisibility('div1', 'div2', 'div3', 'div4', 'div5', 'none', 'inline', 'none', 'none', 'none');">Questions Asked</a>   
+ <a href="#" class="myButtonn" onclick="setVisibility('div1', 'div2', 'div3', 'div4', 'div5', 'inline', 'none', 'none', 'none', 'none');">Question Answered</a>   
+ <a href="#" class="myButton2" onclick="setVisibility('div1', 'div2', 'div3', 'div4', 'div5', 'none', 'none', 'inline', 'none', 'none');">Blog</a>
+ <a href="#" class="myButton1" onclick="setVisibility('div1', 'div2', 'div3', 'div4', 'div5', 'none', 'none', 'none', 'inline', 'none');">Post</a>
+ &nbsp;
+<a href="#" onclick="setVisibility('div1', 'div2', 'div3', 'div4', 'div5', 'none', 'none', 'none', 'none', 'inline');"> <img src="@routes.Assets.at("images/bio.png")" alt="Quora Bio" title="Quora Bio" width="62" height="62" border="0"> </a>
+
+ 
    </div>
    
    
@@ -64,6 +90,125 @@
             </li>
         }
     </ul>
+    </div>
+    
+    <div style="display: none;" id="div3">
+    <h1><font color="black">@quora_blog.size() blog(s) found!</font></h1>
+    
+   <!--  <ul>
+        @for(qb <- quora_blog) {
+            <li>
+                <font color="black">@qb.blog_name</font>
+                </br> -
+                <font color="MediumVioletRed"><b>More Information:</b></font> 
+                <a href="@qb.blog_link" target="_blank" class="one">@qb.blog_link</a>
+                
+            </li>
+        }
+    </ul> -->
+    
+    <ul>
+        @for(qb <- quora_blog) {
+            <li>
+                <a href="@qb.blog_link" target="_blank" class="one" style="text-decoration: none">@qb.blog_name</a>
+                <br/> 
+                <br/> 
+            </li>
+        }
+    </ul> 
+    
+    </div>
+    
+    <div style="display: none;" id="div4">
+    <h1><font color="black">@quora_post.size() post(s) found!</font></h1>
+    
+    <ul>
+        @for(qp <- quora_post) {
+            
+            <li>
+                <a href="@qp.post_link" target="_blank" class="one" style="text-decoration: none">@qp.post_heading</a>
+                <br/> 
+                <br/> 
+            </li>
+        }
+    </ul>
+    </div>
+    
+    <div style="display: none;" id="div5">
+    @if(quoraBio.isEmpty) {
+  <h1><font color=red>Nothing to display!!</font></h1>
+}
+     @for(gdb <- quoraBio) {
+    <h2><font color=#8B0000><b>@gdb.name</b></font></h2>
+    
+  <div id='parent_div_1'>
+<div class ='child_div_1'> <img src="@gdb.image_link" alt="@gdb.name" title="@gdb.name" width="111" height="148" border="0"></div>
+<div class ='child_div_2'>
+<fieldset>
+  <legend><font color = "FireBrick"><b>Quora Profile:</b></font></legend>
+<font color = DarkBlue><b>Biography :</b></font>&nbsp;&nbsp;<font color="green">@gdb.biography</font><br/>
+<font color = DarkBlue><b>Description :</b></font>&nbsp;&nbsp;<font color="green">@gdb.description</font><br/>
+
+           <font color = DarkBlue><b> Location(s) :</b></font>
+            <ul>
+            
+            @for(loc <- gdb.location) {
+            	<li>
+                <font color="red">@loc</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+         <font color = DarkBlue><b> Employment :</b></font>
+            <ul>
+            
+            @for(loc1 <- gdb.employment) {
+            	<li>
+                <font color="red">@loc1</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+             <font color = DarkBlue><b>Education :</b></font>
+            <ul>
+            
+            @for(loc2 <- gdb.education) {
+            	<li>
+                <font color="red">@loc2</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+           
+                <font color = DarkBlue><b>Interest(s) :</b></font>
+            <ul>
+            
+            @for(loc3 <- gdb.interests) {
+            	<li>
+                <font color="red">@loc3</font>
+                </li>
+               }
+                
+                </ul>      
+                <br/>
+             
+                </fieldset>
+
+</div>
+</div>
+    
+    <br/>
+    
+    	
+         
+                
+          
+        }
     </div>
     
  </body>   

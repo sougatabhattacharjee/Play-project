@@ -1,25 +1,46 @@
-@(tweeetMentioned: List[Twitter], tweeetFavorites: List[Twitter], tweets: List[Twitter])
+@(tweeetMentioned: List[Twitter], tweeetFavorites: List[Twitter], tweets: List[Twitter], twitterBio: List[userInfo], twitterGroup: List[Grouplist])
 
 @import helper._
 
 <html>
     <head>
     <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/twitter.jpg")" />
-    <title>Twitter tweets details</title>
+    <title>Twitter details</title>
     <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/twitter.css")">
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
         <script type="text/javascript">
-        function setVisibility(id1, id2, id3, visibility1, visibility2, visibility3) {
+        function setVisibility(id1, id2, id3, id4, visibility1, visibility2, visibility3, visibility4) {
         	document.getElementById(id1).style.display = visibility1;
         	document.getElementById(id2).style.display = visibility2;
         	document.getElementById(id3).style.display = visibility3;
+        	document.getElementById(id4).style.display = visibility4;
         	}
         </script>
 </head>
 
 <style type="text/css">
 
-
+#parent_div_1{
+    width:100%;
+    height:auto;
+    border:0px solid red;
+    margin-right:10px;
+    float:left;
+}
+.child_div_1{
+width:auto;
+height:100%;
+ border:0px solid red;
+    float:left;
+    margin-right:5px;
+}
+.child_div_2{
+width:auto;
+height:100%;
+ border:0px solid red;
+    padding-left : 120px;
+    margin-right:5px;
+}
 </style>
 
 <body> 
@@ -31,9 +52,12 @@
    
       <div style="text-align:center">
    
- <a href="#" class="myButton1" onclick="setVisibility('div1', 'div2', 'div3', 'inline', 'none', 'none');">Mentioned tweets</a>   
- <a href="#" class="myButton2" onclick="setVisibility('div1', 'div2', 'div3', 'none', 'inline', 'none');">Favorites tweets</a>
- <a href="#" class="myButton3" onclick="setVisibility('div1', 'div2', 'div3', 'none', 'none', 'inline');">Tweets</a>   
+ <a href="#" class="myButton1" onclick="setVisibility('div1', 'div2', 'div3', 'div4', 'inline', 'none', 'none', 'none');">Mentioned tweets</a>   
+ <a href="#" class="myButton2" onclick="setVisibility('div1', 'div2', 'div3', 'div4', 'none', 'inline', 'none', 'none');">Favorites tweets</a>
+ <a href="#" class="myButton3" onclick="setVisibility('div1', 'div2', 'div3', 'div4', 'none', 'none', 'inline', 'none');">Tweets</a> 
+  &nbsp;
+<a href="#" onclick="setVisibility('div1', 'div2', 'div3', 'div4', 'none', 'none', 'none', 'inline');"> 
+<img src="@routes.Assets.at("images/bio.png")" alt="Twitter Bio" title="Twitter Bio" width="62" height="62" border="0"> </a>
   </div>
    
    
@@ -79,6 +103,93 @@
             </li>
         }
     </ul>
+    </div>
+    
+    <div style="display: none;" id="div4">
+    @if(twitterBio.isEmpty) {
+  <h1><font color=red>Nothing to display!!</font></h1>
+}
+     @for(gdb <- twitterBio) {
+    <h2><font color=DodgerBlue><b>@gdb.name</b></font></h2>
+    
+  <div id='parent_div_1'>
+<div class ='child_div_1'> <img src="@gdb.image_link" alt="@gdb.name" title="@gdb.name" width="111" height="148" border="0"></div>
+<div class ='child_div_2'>
+<fieldset>
+  <legend><font color = "CornflowerBlue"><b>Twitter Profile:</b></font></legend>
+<font color = DarkBlue><b>Biography :</b></font>&nbsp;&nbsp;<font color="green">@gdb.biography</font><br/>
+<font color = DarkBlue><b>Description :</b></font>&nbsp;&nbsp;<font color="green">@gdb.description</font><br/>
+
+            <font color = DarkBlue><b>Location(s) :</b></font>
+            <ul>
+            
+            @for(loc <- gdb.location) {
+            	<li>
+                <font color="red">@loc</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+          <font color = DarkBlue><b>Employment :</b></font>
+            <ul>
+            
+            @for(loc1 <- gdb.employment) {
+            	<li>
+                <font color="red">@loc1</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+                 <font color = DarkBlue><b>Education :</b></font>
+            <ul>
+            
+            @for(loc2 <- gdb.education) {
+            	<li>
+                <font color="red">@loc2</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+           
+                <font color = DarkBlue><b>Interest(s) :</b></font>
+            <ul>
+            
+            @for(loc3 <- gdb.interests) {
+            	<li>
+                <font color="red">@loc3</font>
+                </li>
+               }
+                
+                </ul>      
+                <br/>
+               
+                 <font color = DarkBlue><b>Group(s) :</b></font>
+            <ul>
+            @for(gg <- twitterGroup) {
+            	<li>
+                <font color="red">@gg.group_name</font>
+                </li>
+               }
+                
+                </ul>    
+             
+                </fieldset>
+
+</div>
+</div>
+    
+    <br/>
+    
+    	
+         
+                
+          
+        }
     </div>
     
  </body>   

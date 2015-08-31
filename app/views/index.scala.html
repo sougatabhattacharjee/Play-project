@@ -15,6 +15,10 @@
     <link rel='stylesheet' type='text/css' href="@routes.Assets.at("stylesheets/select2.css")"/>
     <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.8.0.min.js")"></script>
     <script type="text/javascript" src="@routes.Assets.at("javascripts/select2.js")"></script>
+     <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/index.js")"></script>
+   
         
         <script type="text/javascript">
         $(document).ready(function() {
@@ -24,36 +28,14 @@
         </script>
         
         <script type="text/javascript">
-        function formValidator(){
-            alert('asdsad');
-        	var u_name = document.getElementById('u_name');
-        	var choice = document.getElementById('choice');
-        	rating = document.forms["doReview"]["choice"].value;
-        	alert('>>'+choice.checked)
-        	
-			if(!notEmpty(u_name,'Please Select a User!')){
-				alert('1');
-				document.getElementById('h1').style.display = 'inline';
-			}
-			else if(rating <= 0){
-				alert('2');
-				document.getElementById('h2').style.display = 'inline';
-			}
-			else
-				document.getElementById('doReview').submit();
-        }
-
-        function notEmpty(elem, helperMsg){
-        	if(elem.value.length == 0){
-        		return false;
-        	}
-        	return true;
-        }
+        
+        
         </script>
         
         <style type="text/css">
        
   </style>
+  
         
     </head>
 	<!-- <body background="@routes.Assets.at("images/choice.jpg")"> -->
@@ -68,49 +50,68 @@
     	
     	
 	Please Select a User....
-	<select required style="width:200px" name="u_name" id="u_name" size=@users.size()>
+	<select required style="width:200px" name="u_name" id="u_name" size=@users.size() onchange="hideError();">
         @for(user <- users) {
             <option value = @user.user_id>
                 @user.username
             </option>
         }
-        </select>
-        <p id="h1" style="display:none; color:red;" >Please Select a User!</p>
+        </select><p id="h1img" style="display:none;">
+         <img src="@routes.Assets.at("images/valid.png")"  height="22" width="22" alt="Correct" title="Correct"></p>
+        <br/>
+        <p id="h1" style="display:none; color:red;" ><b>Please Select a User!</b></p>
         
         <br/>
         <br/>
         <br/>
  
  <label>
-  <input type="radio" required name="choice" id="choice" value="1" />
+  <input type="radio" required name="choice" id="choice" value="1" onclick="hidemsg();" />
   <img src="@routes.Assets.at("images/twitter.jpg")"  height="42" width="42" alt="Twitter" title="Twitter">
 </label>
         
  
  <label>
-  <input type="radio" required  name="choice" id="choice" value="2" />
+  <input type="radio" required  name="choice" id="choice" value="2" onclick="hidemsg();" />
   <img src="@routes.Assets.at("images/Q.png")"  height="42" width="42" alt="Quora" title="Quora">
 </label>
  
  <label>
-  <input type="radio" required  name="choice" id="choice" value="3" />
+  <input type="radio" required  name="choice" id="choice" value="3" onclick="hidemsg();" />
   <img src="@routes.Assets.at("images/gr.png")"  height="42" width="42" alt="Goodreads" title="Goodreads">
 </label>
+
+<label>
+  <input type="radio" required  name="choice" id="choice" value="4" onclick="hidemsg();"/>
+  <img src="@routes.Assets.at("images/bio.png")"  height="42" width="42" alt="Show User Bio" title="Show User Bio">
+</label>
+<label>
+
+<label>
+  <input type="radio" required  name="choice" id="choice" value="5" onclick="hidemsg();"/>
+  <img src="@routes.Assets.at("images/searchTxt.png")"  height="42" width="42" alt="Search Text" title="Search Text">
+</label>
+
+<label>
+  <input type="radio" required  name="choice" id="choice" value="6" onclick="hidemsg();"/>
+  <img src="@routes.Assets.at("images/searchFriend.png")"  height="42" width="42" alt="Search Friend" title="Search Friend">
+</label>
+<label>
+
+<p id="h2img" style="display:none;">
+         <img src="@routes.Assets.at("images/valid.png")"  height="22" width="22" alt="Correct" title="Correct"></p>
+         </label>
 <br/>
-<p id="h2" style="display:none;">Please Select an option from Twitter, Quora and GoodReads!</p>
-        
-     <!--    @inputRadioGroup(
-         	taskForm("choice"),
-         options = options("1" -> "Twitter", "2" -> "Quora", "3" -> "Goodreads")
-      )  -->
+<p id="h2" style="display:none; color:red;" ><b>Please Select an option!</b></p>
+    
       
        <br/>
         <br/>
-        <!--<input type="submit" value="Submit">-->
+       
         
-         <div id="container_buttons">
+         <div id="container_buttons" style=" padding-left : 150px;">
                     <p>
-                        <a class="a_demo_four" href="#" onclick="document.getElementById('doReview').submit();">
+                        <a class="a_demo_four" href="#" onclick="formValidator();">
                             Submit
                         </a>
                     </p>

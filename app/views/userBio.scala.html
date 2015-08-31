@@ -1,0 +1,299 @@
+@(twitterBio: List[userInfo], quoraBio: List[userInfo], goodreadsBio: List[userInfo], goodreadsGroup: List[Grouplist], twitterGroup: List[Grouplist])
+
+@import helper._
+
+<html>
+    <head>
+    <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/gr.png")" />
+    <title>Goodreads details</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/goodreads.css")">
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+        <script type="text/javascript">
+        function setVisibility(id1, id2, id3, visibility1, visibility2, visibility3) {
+        	document.getElementById(id1).style.display = visibility1;
+        	document.getElementById(id2).style.display = visibility2;
+        	document.getElementById(id3).style.display = visibility3;
+        	}
+        </script>
+</head>
+
+<style type="text/css">
+
+#parent_div_1{
+    width:100%;
+    height:auto;
+    border:0px solid red;
+    margin-right:10px;
+    float:left;
+}
+.child_div_1{
+width:auto;
+height:100%;
+ border:0px solid red;
+    float:left;
+    margin-right:5px;
+}
+.child_div_2{
+width:auto;
+height:100%;
+ border:0px solid red;
+    padding-left : 120px;
+    margin-right:5px;
+}
+</style>
+
+<body> 
+  <div style="width:10%">
+<a href="@routes.Application.users()">
+<img src="@routes.Assets.at("images/UserSearch.png")" alt="Go to Search Page!" title="Go to Search Page!" width="62" height="62" border="0">
+</a>
+</div>
+
+@if(twitterBio.isEmpty && quoraBio.isEmpty && goodreadsBio.isEmpty) {
+  <h1><font color=red>Nothing to display!!</font></h1>
+} 
+
+   <div id="div1">
+     @for(gdb <- twitterBio) {
+    <h2><font color=DodgerBlue><b>@gdb.name</b></font></h2>
+    
+  <div id='parent_div_1'>
+<div class ='child_div_1'> <img src="@gdb.image_link" alt="@gdb.name" title="@gdb.name" width="111" height="148" border="0"></div>
+<div class ='child_div_2'>
+<fieldset>
+  <legend><font color = "CornflowerBlue"><b>Twitter Profile:</b></font></legend>
+<font color = DarkBlue><b>Biography :</b></font>&nbsp;&nbsp;<font color="green">@gdb.biography</font><br/>
+<font color = DarkBlue><b>Description :</b></font>&nbsp;&nbsp;<font color="green">@gdb.description</font><br/>
+
+            <font color = DarkBlue><b>Location(s) :</b></font>
+            <ul>
+            
+            @for(loc <- gdb.location) {
+            	<li>
+                <font color="red">@loc</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+         <font color = DarkBlue><b> Employment :</b></font>
+            <ul>
+            
+            @for(loc1 <- gdb.employment) {
+            	<li>
+                <font color="red">@loc1</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+                <font color = DarkBlue><b> Education :</b></font>
+            <ul>
+            
+            @for(loc2 <- gdb.education) {
+            	<li>
+                <font color="red">@loc2</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+           
+               <font color = DarkBlue><b> Interest(s) :</b></font>
+            <ul>
+            
+            @for(loc3 <- gdb.interests) {
+            	<li>
+                <font color="red">@loc3</font>
+                </li>
+               }
+                
+                </ul>      
+                <br/>
+             
+                 <font color = DarkBlue><b>Group(s) :</b></font>
+            <ul>
+            @for(gg <- twitterGroup) {
+            	<li>
+                <font color="red">@gg.group_name</font>
+                </li>
+               }
+                
+                </ul>   
+                </fieldset>
+
+</div>
+</div>
+    
+    <br/>
+          
+        }
+    </div>
+   <br/><br/>
+    
+    
+    <div id="div2">
+     @for(gdb <- quoraBio) {
+    <h2><font color=#8B0000><b>@gdb.name</b></font></h2>
+    
+  <div id='parent_div_1'>
+<div class ='child_div_1'> <img src="@gdb.image_link" alt="@gdb.name" title="@gdb.name" width="111" height="148" border="0"></div>
+<div class ='child_div_2'>
+<fieldset>
+  <legend><font color = "FireBrick"><b>Quora Profile:</b></font></legend>
+<font color = DarkBlue><b>Biography :</b></font>&nbsp;&nbsp;<font color="green">@gdb.biography</font><br/>
+<font color = DarkBlue><b>Description :</b></font>&nbsp;&nbsp;<font color="green">@gdb.description</font><br/>
+
+           <font color = DarkBlue><b> Location(s) :</b></font>
+            <ul>
+            
+            @for(loc <- gdb.location) {
+            	<li>
+                <font color="red">@loc</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+          <font color = DarkBlue><b>Employment :</b></font>
+            <ul>
+            
+            @for(loc1 <- gdb.employment) {
+            	<li>
+                <font color="red">@loc1</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+                
+               <font color = DarkBlue><b>  Education :</b></font>
+            <ul>
+            
+            @for(loc2 <- gdb.education) {
+            	<li>
+                <font color="red">@loc2</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+           
+              <font color = DarkBlue><b>  Interest(s) :</b></font>
+            <ul>
+            
+            @for(loc3 <- gdb.interests) {
+            	<li>
+                <font color="red">@loc3</font>
+                </li>
+               }
+                
+                </ul>      
+                <br/>
+             
+                </fieldset>
+
+</div>
+</div>
+    
+    <br/>
+    
+           
+        }
+    </div>
+    
+    <br/><br/>
+    
+     <div  id="div3">
+     @for(gdb <- goodreadsBio) {
+    <h2><font color="Sienna"><b>@gdb.name</b></font></h2>
+    
+  <div id='parent_div_1'>
+<div class ='child_div_1'> <img src="@gdb.image_link" alt="@gdb.name" title="@gdb.name" width="111" height="148" border="0"></div>
+<div class ='child_div_2'>
+<fieldset>
+  <legend><font color = "SaddleBrown"><b>Goodreads Profile:</b></font></legend>
+<font color = DarkBlue><b>Sex :</b></font>&nbsp;&nbsp;<font color="green">@gdb.gender</font><br/> 
+               <font color = DarkBlue><b> Age :</b></font>&nbsp;&nbsp;<font color="green">@gdb.age</font> <br/>
+               <font color = DarkBlue><b> Website :</b></font>&nbsp;&nbsp;<font color="green">@gdb.website</font> <br/>
+               <font color = DarkBlue><b> Fav Books :</b></font>&nbsp;&nbsp;<font color="green">@gdb.fav_books</font> <br/>
+                
+           <font color = DarkBlue><b> Fav Author(s) :</b></font>
+            <ul>
+            
+            @for(fa <- gdb.fav_authors) {
+            	<li>
+                <font color="red">@fa</font>
+                </li>
+               }
+                
+                </ul>    
+                
+            <br/>
+           <font color = DarkBlue><b> Location(s) :</b></font>
+            <ul>
+            
+            @for(loc <- gdb.location) {
+            	<li>
+                <font color="red">@loc</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+         <font color = DarkBlue><b> Bookshelve(s) :</b></font>
+            <ul>
+            
+            @for(loc1 <- gdb.bookshelves) {
+            	<li>
+                <font color="red">@loc1</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+              <font color = DarkBlue><b>  Interest(s) :</b></font>
+            <ul>
+            
+            @for(loc2 <- gdb.interests) {
+            	<li>
+                <font color="red">@loc2</font>
+                </li>
+               }
+                
+                </ul>      
+                <br/>
+             <font color = DarkBlue><b> Description :</b></font><font color="green">@gdb.description</font> <br/>  
+             <br/>
+                     <font color = DarkBlue><b>Group(s) :</b></font>
+            <ul>
+            
+            @for(gg <- goodreadsGroup) {
+            	<li>
+                <font color="red">@gg.group_name</font>
+                </li>
+               }
+                
+                </ul>  
+                </fieldset>
+
+</div>
+</div>
+    
+    <br/>
+    
+    	
+         
+                
+          
+        }
+      
+   
+    </div>
+    
+ </body>   
+    
+    

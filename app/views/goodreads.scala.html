@@ -1,24 +1,45 @@
-@(goodReads: List[Goodreads])
+@(goodReads: List[Goodreads], goodreadsreview: List[Goodreads], goodreadsBio: List[userInfo], goodreadsGroup: List[Grouplist])
 
 @import helper._
 
 <html>
     <head>
     <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("images/gr.png")" />
-    <title>Quora Questions details</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/quora.css")">
+    <title>Goodreads details</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/goodreads.css")">
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
         <script type="text/javascript">
-        function setVisibility(id1, id2, visibility1, visibility2) {
+        function setVisibility(id1, id2, id3, visibility1, visibility2, visibility3) {
         	document.getElementById(id1).style.display = visibility1;
         	document.getElementById(id2).style.display = visibility2;
+        	document.getElementById(id3).style.display = visibility3;
         	}
         </script>
 </head>
 
 <style type="text/css">
 
-
+#parent_div_1{
+    width:100%;
+    height:auto;
+    border:0px solid red;
+    margin-right:10px;
+    float:left;
+}
+.child_div_1{
+width:auto;
+height:100%;
+ border:0px solid red;
+    float:left;
+    margin-right:5px;
+}
+.child_div_2{
+width:auto;
+height:100%;
+ border:0px solid red;
+    padding-left : 120px;
+    margin-right:5px;
+}
 </style>
 
 <body> 
@@ -27,8 +48,15 @@
 <img src="@routes.Assets.at("images/UserSearch.png")" alt="Go to Search Page!" title="Go to Search Page!" width="62" height="62" border="0">
 </a>
 </div>
+
+<div style="text-align:center">
+<a href="#" class="myButton" onclick="setVisibility('div1', 'div2', 'div3', 'inline', 'none', 'none');">Books</a>
+<a href="#" class="myButton1" onclick="setVisibility('div1', 'div2', 'div3', 'none', 'inline', 'none');">Text Review</a>
+ &nbsp;
+<a href="#" onclick="setVisibility('div1', 'div2', 'div3', 'none', 'none', 'inline');"> <img src="@routes.Assets.at("images/bio.png")" alt="Goodreads Bio" title="Goodreads Bio" width="62" height="62" border="0"> </a>
+</div>
    
-   <div  id="div1">
+   <div style="display: none;" id="div1">
     <h1><font color="black">@goodReads.size() book(s)</font></h1>
     
     <ul>
@@ -36,13 +64,128 @@
             <li>
                 <font color="red">@qa.title</font>
                 </br>
-                <font color="blue"> @qa.author</font>, Rating -> <font color="green"> @qa.rating</font>
+                Authors : <font color="blue"> @qa.author</font>, Rating : <font color="green"> @qa.rating</font>
                 </br>
-                 <font color="black"> @qa.reviewtext</font>
+                 Genre : <font color="black"> @qa.genre</font>, 
+               
+                 Shelf : <font color="black"> @qa.shelf</font>
+               </br>
+                 ISBN : <font color="black"> @qa.isbn</font>,
+                 ISBN13 : <font color="black"> @qa.isbn13</font>  
+                 </br>
+                 Date : <font color="black"> @qa.date</font>
                 
             </li>
         }
     </ul>
+    </div>
+    
+     <div style="display: none;" id="div2">
+    <h1><font color="black">@goodreadsreview.size() review(s) found!</font></h1>
+    
+    <ul>
+        @for(gd <- goodreadsreview) {
+            <li>
+                <font color="red">@gd.title</font>
+                </br> - 
+                <font color="black"> @gd.reviewtext</font>
+                
+                
+            </li>
+        }
+    </ul>
+    </div>
+    
+     <div style="display: none;" id="div3">
+     @if(goodreadsBio.isEmpty) {
+  <h1><font color=red>Nothing to display!!</font></h1>
+}
+     @for(gdb <- goodreadsBio) {
+    <h2><font color="Sienna"><b>@gdb.name</b></font></h2>
+    
+  <div id='parent_div_1'>
+<div class ='child_div_1'> <img src="@gdb.image_link" alt="@gdb.name" title="@gdb.name" width="111" height="148" border="0"></div>
+<div class ='child_div_2'>
+<fieldset>
+  <legend><font color = "SaddleBrown"><b>Goodreads Profile:</b></font></legend>
+<font color = DarkBlue><b>Sex :</b></font>&nbsp;&nbsp;<font color="green">@gdb.gender</font><br/> 
+                <font color = DarkBlue><b>Age :</b></font>&nbsp;&nbsp;<font color="green">@gdb.age</font> <br/>
+                <font color = DarkBlue><b>Website :</b></font>&nbsp;&nbsp;<font color="green">@gdb.website</font> <br/>
+                <font color = DarkBlue><b>Fav Books :</b></font>&nbsp;&nbsp;<font color="green">@gdb.fav_books</font> <br/>
+                
+           <font color = DarkBlue><b> Fav Author(s) :</b></font>
+            <ul>
+            
+            @for(fa <- gdb.fav_authors) {
+            	<li>
+                <font color="red">@fa</font>
+                </li>
+               }
+                
+                </ul>    
+                
+            <br/>
+            <font color = DarkBlue><b>Location(s) :</b></font>
+            <ul>
+            
+            @for(loc <- gdb.location) {
+            	<li>
+                <font color="red">@loc</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+         <font color = DarkBlue><b> Bookshelve(s) :</b></font>
+            <ul>
+            
+            @for(loc1 <- gdb.bookshelves) {
+            	<li>
+                <font color="red">@loc1</font>
+                </li>
+               }
+                
+                </ul>
+                <br/>
+               <font color = DarkBlue><b> Interest(s) :</b></font>
+            <ul>
+            
+            @for(loc2 <- gdb.interests) {
+            	<li>
+                <font color="red">@loc2</font>
+                </li>
+               }
+                
+                </ul>      
+                <br/>
+              <font color = DarkBlue><b>Description :</b></font><font color="green">@gdb.description</font> 
+              <br/>
+               <br/>
+               
+               <font color = DarkBlue><b>Group(s) :</b></font>
+            <ul>
+            
+            @for(gg <- goodreadsGroup) {
+            	<li>
+                <font color="red">@gg.group_name</font>
+                </li>
+               }
+                
+                </ul>    
+                </fieldset>
+
+</div>
+</div>
+    
+    <br/>
+    
+    	
+         
+                
+          
+        }
+      
+   
     </div>
     
  </body>   
